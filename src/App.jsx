@@ -9,15 +9,16 @@ function App() {
   const [char, setChar] = useState([]);
   const [film, setFilm] = useState([]);
   const [selectedChar, setSelectedChar] = useState("");
-  const callApi = () => {
-    axios.get(`https://swapi.dev/api/people/?search=${query}`).then((res) => {
-      setChar(res.data.results);
-    });
-  };
+
   useEffect(() => {
-    if (query.length > 0) callApi();
+    const getData = setTimeout(() => {
+      axios.get(`https://swapi.dev/api/people/?search=${query}`).then((res) => {
+        setChar(res.data.results);
+      });
+    }, 1000);
+    //!https://www.freecodecamp.org/news/debouncing-explained/
+    return () => clearTimeout(getData);
   }, [query]);
-  console.log(char, "data");
 
   const filmsApi = (films) => {
     console.log(films, "hello");
@@ -31,7 +32,7 @@ function App() {
         });
       });
   };
-  console.log(film, "film");
+
   return (
     <div>
       <h1>Search for star wars characters</h1>
